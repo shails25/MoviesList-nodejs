@@ -1,0 +1,71 @@
+<html>
+  <head>
+      <title>My Movies</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" type="text/css" href="/style.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+  <header class="flex justify-around">
+    <div><a href="/" class="px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm  text-lg text-white uppercase leading-10">Home</a>
+             <a href="/liked" class="px-4 py-2 font-semibold text-sm bg-cyan-500 text-white rounded-full shadow-sm  text-lg text-white uppercase leading-10">Liked</a>
+     </div>
+                  <form id="form" action="/search">
+                      <input
+                          type="text"
+                          name="m"
+                          id="search"
+                          placeholder="Search"
+                          class="search"
+                      />
+                  </form>
+              </header>
+    <div class="container m-auto">
+         <div class="main flex flex-wrap items-start">
+
+         <% if(moviesList.Response == "True"){ %>
+            <% moviesList.Search.forEach(function(movie) { %>
+                      <div class="m-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 shadow-lg">
+                        <img src="<%= movie.Poster %>">
+                        <div class="p-2">
+                          <p class="card-title mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= movie.Title %></p>
+                          <p class="card-text mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white"><%= movie.Type %> (<%= movie.Year %>)</p>
+                          <button class="favourite px-4 py-2 font-semibold text-sm bg-white text-white rounded-full shadow-sm" title="Add to favourite" data-movie="<%= JSON.stringify(movie) %>">
+                            <img src="/img/heart_line.png">
+                          </button>
+                        </div>
+                      </div>
+            <% }); %>
+        <% } else if(moviesList.Response == "False") { %>
+            <h3><%= moviesList.Error %></h3>
+        <% } else { %>
+            <h1 class="text-center leading-10 font-extrabold align-center">Search movie title in search box..</h3>
+        <% } %>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(function(){
+        $(".favourite").click(function(ele){
+            let elem = $(this);
+            let data = $(this).data('movie')
+            $.ajax({
+                method: 'post',
+                url: '/liked',
+                data: data,
+                success: function(res){
+                    alert("Added to favourite");
+                    elem.html('<img src="/img/heart_full.png">')
+                },
+                error: function(code, err ){
+                    alert(err);
+                }
+            })
+        });
+    });
+  </script>
+</html>

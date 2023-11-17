@@ -1,0 +1,18 @@
+{
+  "name": "slash-movie-app",
+  "version": "1.0.0",
+  "description": "show movie list",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node app.js"
+  },
+  "author": "Shailendra Pal Singh",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
+}
